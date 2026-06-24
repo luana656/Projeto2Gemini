@@ -1,405 +1,878 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SeguraMente - Segurança Digital para a Melhor Idade</title>
-  
-  <!-- Tailwind CSS para estilização rápida e responsiva -->
-  <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
-  
-  <!-- Ligação com o seu arquivo de estilos personalizado -->
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internet Segura - Guia Prático para a Melhor Idade</title>
+    <style>
+        /* --- VARIÁVEIS DE DESIGN E CORES --- */
+        :root {
+            --bg-principal: #f0f4f8;
+            --bg-card: #ffffff;
+            --texto-principal: #1e293b;
+            --texto-secundario: #475569;
+            --cor-primaria: #0284c7; /* Azul seguro e amigável */
+            --cor-primaria-hover: #0369a1;
+            --cor-alerta: #dc2626;
+            --cor-alerta-suave: #fef2f2;
+            --cor-sucesso: #16a34a;
+            --cor-destaque: #f59e0b; /* Laranja de atenção */
+            --borda-card: #e2e8f0;
+            --tamanho-fonte-base: 18px; /* Fonte maior por padrão para idosos */
+            --espacamento-toque: 16px;
+        }
+
+        /* --- CONFIGURAÇÃO PADRÃO (RESET) e ACESSIBILIDADE --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth; /* Rolagem suave ao clicar nos botões de ajuda */
+        }
+
+        body {
+            background-color: var(--bg-principal);
+            color: var(--texto-principal);
+            font-size: var(--tamanho-fonte-base);
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* --- OCULTAR ELEMENTOS DE CONTROLE --- */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        /* --- TRUQUE CSS: CONTROLES DE ACESSIBILIDADE --- */
+        /* 1. Alto Contraste */
+        #alto-contraste:checked ~ .app-container {
+            --bg-principal: #000000;
+            --bg-card: #121212;
+            --texto-principal: #ffffff;
+            --texto-secundario: #e2e8f0;
+            --cor-primaria: #ffff00; /* Amarelo de alto contraste */
+            --cor-primaria-hover: #ffea00;
+            --cor-alerta: #ff3333;
+            --cor-alerta-suave: #220000;
+            --cor-sucesso: #33ff33;
+            --cor-destaque: #ffaa00;
+            --borda-card: #ffff00;
+        }
+
+        /* 2. Fonte Extra Grande */
+        #fonte-grande:checked ~ .app-container {
+            --tamanho-fonte-base: 24px;
+        }
+
+        /* --- LAYOUT DO APLICATIVO --- */
+        .app-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--bg-principal);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid var(--borda-card);
+            border-right: 1px solid var(--borda-card);
+        }
+
+        /* --- BARRA DE ACESSIBILIDADE --- */
+        .barra-acessibilidade {
+            background-color: #1e293b;
+            color: #ffffff;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .barra-acessibilidade span {
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .botoes-acessibilidade {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-acessibilidade {
+            display: inline-flex;
+            align-items: center;
+            background-color: #334155;
+            color: #ffffff;
+            border: 2px solid #64748b;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85em;
+            user-select: none;
+            transition: background-color 0.2s;
+        }
+
+        .btn-acessibilidade:hover,
+        .btn-acessibilidade:focus {
+            background-color: #475569;
+            outline: 3px solid #0284c7;
+        }
+
+        /* Indicação de botão ativo */
+        #alto-contraste:checked ~ .app-container .btn-acessibilidade[for="alto-contraste"],
+        #fonte-grande:checked ~ .app-container .btn-acessibilidade[for="fonte-grande"] {
+            background-color: var(--cor-primaria);
+            color: #000000;
+            border-color: #ffffff;
+        }
+
+        /* --- CABEÇALHO PRINCIPAL --- */
+        header {
+            background-color: var(--cor-primaria);
+            color: #ffffff;
+            text-align: center;
+            padding: 30px 20px;
+            border-bottom: 5px solid var(--cor-primaria-hover);
+        }
+
+        #alto-contraste:checked ~ .app-container header {
+            color: #000000;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        /* --- SEÇÃO 1: BANNER INICIAL COM BOTÃO DE AJUDA --- */
+        .banner-inicial {
+            background: linear-gradient(135deg, #0284c7 0%, #075985 100%);
+            color: #ffffff;
+            padding: 40px 30px;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            position: relative;
+        }
+
+        #alto-contraste:checked ~ .app-container .banner-inicial {
+            background: #121212;
+            border: 3px solid #ffff00;
+            color: #ffffff;
+        }
+
+        .banner-conteudo h2 {
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .banner-conteudo p {
+            font-size: 1.1em;
+            margin-bottom: 25px;
+            opacity: 0.95;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Botão de Ajuda em Destaque */
+        .btn-ajuda-urgente {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background-color: #e11d48; /* Vermelho vibrante */
+            color: #ffffff;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 18px 35px;
+            border-radius: 50px;
+            box-shadow: 0 10px 20px rgba(225, 29, 72, 0.4);
+            border: 3px solid #ffffff;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            animation: pulsar 2s infinite;
+        }
+
+        .btn-ajuda-urgente:hover,
+        .btn-ajuda-urgente:focus {
+            background-color: #be123c;
+            transform: scale(1.03);
+            box-shadow: 0 6px 15px rgba(225, 29, 72, 0.6);
+            outline: none;
+        }
+
+        #alto-contraste:checked ~ .app-container .btn-ajuda-urgente {
+            background-color: #ff3333;
+            color: #000000;
+            border-color: #ffff00;
+            box-shadow: none;
+        }
+
+        @keyframes pulsar {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.04); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- CONTEÚDO --- */
+        main {
+            padding: 0 20px 20px 20px;
+            flex-grow: 1;
+        }
+
+        /* Cartões de Seção */
+        .secao-titulo {
+            font-size: 1.4em;
+            margin: 35px 0 18px 0;
+            padding-bottom: 8px;
+            border-bottom: 3px solid var(--cor-primaria);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--texto-principal);
+        }
+
+        /* --- SEÇÃO 2: DICAS IMPORTANTES (ACCORDION) --- */
+        details {
+            background-color: var(--bg-card);
+            border: 2px solid var(--borda-card);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: border-color 0.2s;
+        }
+
+        details[open] {
+            border-color: var(--cor-primaria);
+        }
+
+        summary {
+            padding: 18px 20px;
+            font-weight: bold;
+            font-size: 1.1em;
+            cursor: pointer;
+            list-style: none; /* Esconde a seta padrão */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        summary::-webkit-details-marker {
+            display: none; /* Esconde a seta padrão no Safari */
+        }
+
+        summary::after {
+            content: "➕";
+            font-size: 0.9em;
+            color: var(--cor-primaria);
+        }
+
+        details[open] summary::after {
+            content: "➖";
+        }
+
+        summary:hover,
+        summary:focus {
+            background-color: rgba(2, 132, 199, 0.05);
+            outline: none;
+        }
+
+        #alto-contraste:checked ~ .app-container summary:hover {
+            background-color: #ffff00;
+            color: #000000;
+        }
+
+        .conteudo-dica {
+            padding: 20px;
+            border-top: 2px solid var(--borda-card);
+            background-color: rgba(0, 0, 0, 0.01);
+        }
+
+        /* Alertas visuais dentro das dicas */
+        .alerta-perigo {
+            background-color: rgba(220, 38, 38, 0.08);
+            border-left: 6px solid var(--cor-alerta);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin: 15px 0;
+        }
+
+        .alerta-seguro {
+            background-color: rgba(22, 163, 74, 0.08);
+            border-left: 6px solid var(--cor-sucesso);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin: 15px 0;
+        }
+
+        .alerta-titulo {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .alerta-perigo .alerta-titulo {
+            color: var(--cor-alerta);
+        }
+
+        .alerta-seguro .alerta-titulo {
+            color: var(--cor-sucesso);
+        }
+
+        /* --- SEÇÃO 3: DIREITOS NA INTERNET --- */
+        .grid-direitos {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .card-direito {
+            background-color: var(--bg-card);
+            border: 2px solid var(--borda-card);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .card-direito h3 {
+            color: var(--cor-primaria);
+            font-size: 1.15em;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-direito p {
+            color: var(--texto-secundario);
+            font-size: 0.95em;
+        }
+
+        /* --- SEÇÃO 4: COMO IDENTIFICAR GOLPES NO DIA A DIA --- */
+        .painel-golpes {
+            background-color: var(--bg-card);
+            border: 2px solid var(--borda-card);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .intro-golpes {
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .lista-sinais {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sinal-item {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--borda-card);
+        }
+
+        .sinal-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .sinal-numero {
+            background-color: var(--cor-destaque);
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 1.1em;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        #alto-contraste:checked ~ .app-container .sinal-numero {
+            background-color: var(--cor-primaria);
+            color: #000000;
+        }
+
+        .sinal-texto h3 {
+            font-size: 1.1em;
+            margin-bottom: 4px;
+            color: var(--texto-principal);
+        }
+
+        .sinal-texto p {
+            font-size: 0.95em;
+            color: var(--texto-secundario);
+        }
+
+        /* --- SEÇÃO DO QUIZ INTERATIVO (SEM JS) --- */
+        .quiz-container {
+            background-color: var(--bg-card);
+            border: 3px solid var(--cor-primaria);
+            border-radius: 16px;
+            padding: 24px;
+            margin-top: 40px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .quiz-container h3 {
+            font-size: 1.3em;
+            color: var(--cor-primaria);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .quiz-pergunta {
+            margin-top: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px dashed var(--borda-card);
+        }
+
+        .quiz-pergunta:last-of-type {
+            border-bottom: none;
+        }
+
+        .pergunta-texto {
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .quiz-opcoes {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .quiz-opcao-label {
+            flex: 1;
+            min-width: 140px;
+            display: block;
+            background-color: var(--bg-principal);
+            border: 2px solid var(--borda-card);
+            border-radius: 10px;
+            padding: 14px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: bold;
+            user-select: none;
+            transition: all 0.2s;
+        }
+
+        .quiz-opcao-label:hover {
+            border-color: var(--cor-primaria);
+            background-color: rgba(2, 132, 199, 0.05);
+        }
+
+        .quiz-radio {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .quiz-radio:checked + .quiz-opcao-label {
+            background-color: var(--cor-primaria);
+            color: #ffffff;
+            border-color: var(--cor-primaria);
+        }
+
+        #alto-contraste:checked ~ .app-container .quiz-radio:checked + .quiz-opcao-label {
+            color: #000000;
+            background-color: var(--cor-primaria);
+        }
+
+        /* FEEDBACK DE RESPOSTAS */
+        .feedback-correto,
+        .feedback-errado {
+            display: none;
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .feedback-correto {
+            background-color: rgba(22, 163, 74, 0.15);
+            color: var(--cor-sucesso);
+            border: 2px solid var(--cor-sucesso);
+        }
+
+        .feedback-errado {
+            background-color: rgba(220, 38, 38, 0.15);
+            color: var(--cor-alerta);
+            border: 2px solid var(--cor-alerta);
+        }
+
+        /* Seleção de Correto/Incorreto baseada no ID */
+        #p1-falso:checked ~ .feedback-correto-1 { display: block; }
+        #p1-verdadeiro:checked ~ .feedback-errado-1 { display: block; }
+
+        #p2-verdadeiro:checked ~ .feedback-correto-2 { display: block; }
+        #p2-falso:checked ~ .feedback-errado-2 { display: block; }
+
+        /* --- SEÇÃO DE AJUDA URGENTE (FÁCIL LEITURA) --- */
+        .ajuda-urgente {
+            background-color: var(--cor-alerta-suave);
+            border: 3px solid var(--cor-alerta);
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 40px;
+        }
+
+        #alto-contraste:checked ~ .app-container .ajuda-urgente {
+            background-color: #000000;
+            border-color: #ff3333;
+        }
+
+        .ajuda-urgente h3 {
+            color: var(--cor-alerta);
+            font-size: 1.3em;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ajuda-urgente ul {
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+
+        .ajuda-urgente li {
+            margin-bottom: 12px;
+        }
+
+        /* --- RODAPÉ --- */
+        footer {
+            background-color: #1e293b;
+            color: #ffffff;
+            text-align: center;
+            padding: 25px 20px;
+            margin-top: 40px;
+            border-top: 4px solid var(--cor-primaria);
+            font-size: 0.9em;
+        }
+
+        footer p {
+            margin-bottom: 8px;
+        }
+
+        footer a {
+            color: var(--cor-primaria);
+            text-decoration: underline;
+        }
+
+        #alto-contraste:checked ~ .app-container footer a {
+            color: #ffff00;
+        }
+
+        /* --- RESPONSIVIDADE (Telas menores) --- */
+        @media (max-width: 600px) {
+            body {
+                font-size: calc(var(--tamanho-fonte-base) - 2px);
+            }
+            .barra-acessibilidade {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .botoes-acessibilidade {
+                justify-content: center;
+            }
+            .quiz-opcoes {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .quiz-opcao-label {
+                width: 100%;
+            }
+            .banner-inicial {
+                padding: 30px 15px;
+            }
+            .btn-ajuda-urgente {
+                font-size: 1.1em;
+                padding: 15px 25px;
+                width: 100%;
+            }
+        }
+    </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body>
 
-  <!-- Controle de Abas em CSS Puro (Posicionados antes do conteúdo) -->
-  <input type="radio" id="tab-inicio" name="navegacao-principal" class="tab-input" checked>
-  <input type="radio" id="tab-dicas" name="navegacao-principal" class="tab-input">
-  <input type="radio" id="tab-golpes" name="navegacao-principal" class="tab-input">
-  <input type="radio" id="tab-direitos" name="navegacao-principal" class="tab-input">
-  <input type="radio" id="tab-ajuda" name="navegacao-principal" class="tab-input">
+    <!-- Inputs invisíveis que servem como gatilhos de estado para o CSS -->
+    <input type="checkbox" id="alto-contraste" class="sr-only">
+    <input type="checkbox" id="fonte-grande" class="sr-only">
 
-  <!-- Cabeçalho Acessível -->
-  <header class="bg-blue-900 text-white shadow-lg py-5 px-4 text-center">
-    <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div class="flex items-center gap-3">
-        <span class="text-4xl" aria-hidden="true">🛡️</span>
-        <div class="text-left">
-          <h1 class="text-3xl font-extrabold tracking-tight">SeguraMente</h1>
-          <p class="text-blue-200 text-sm font-medium">Internet fácil e protegida para você</p>
-        </div>
-      </div>
-      <div class="text-xs sm:text-sm bg-blue-800 text-blue-100 px-4 py-2 rounded-full font-bold">
-        Letras Grandes • Fácil de Usar
-      </div>
+    <!-- Container geral do aplicativo -->
+    <div class="app-container">
+
+        <!-- Barra Superior de Acessibilidade -->
+        <nav class="barra-acessibilidade" aria-label="Controles de Acessibilidade">
+            <span>Acessibilidade para você:</span>
+            <div class="botoes-acessibilidade">
+                <!-- Labels agem como botões que clicam nos inputs invisíveis acima -->
+                <label for="fonte-grande" class="btn-acessibilidade" tabindex="0" role="button">
+                    🔎 Aumentar Letra
+                </label>
+                <label for="alto-contraste" class="btn-acessibilidade" tabindex="0" role="button">
+                    🌓 Alto Contraste
+                </label>
+            </div>
+        </nav>
+
+        <!-- Cabeçalho -->
+        <header>
+            <h1>Navegar sem Medo</h1>
+            <p>Seu guia amigável e descomplicado para usar a internet com total segurança e dignidade.</p>
+        </header>
+
+        <!-- SEÇÃO 1: BANNER INICIAL COM BOTÃO DE AJUDA -->
+        <section class="banner-inicial" id="inicio">
+            <div class="banner-conteudo">
+                <h2>A internet é para você. A segurança também!</h2>
+                <p>Navegar, conversar e resolver a vida online deve ser prazeroso e livre de preocupações. Aprenda a se proteger de forma simples e rápida.</p>
+                <a href="#ajuda-urgente" class="btn-ajuda-urgente" role="button">
+                    🚨 PRECISO DE AJUDA AGORA!
+                </a>
+            </div>
+        </section>
+
+        <!-- Conteúdo Principal -->
+        <main>
+
+            <!-- SEÇÃO 4 (Solicitada): COMO IDENTIFICAR GOLPES NO DIA A DIA -->
+            <h2 class="secao-titulo" id="identificar-golpes">🕵️‍♂️ Como Identificar um Golpe</h2>
+            <section class="painel-golpes">
+                <p class="intro-golpes">Os golpistas tentam se passar por pessoas ou empresas em quem você confia. Mas quase todo golpe tem as mesmas pistas. Fique atento a estes <strong>4 sinais de alerta</strong>:</p>
+                
+                <div class="lista-sinais">
+                    <div class="sinal-item">
+                        <div class="sinal-numero">1</div>
+                        <div class="sinal-texto">
+                            <h3>Pressão e Senso de Urgência</h3>
+                            <p>Eles sempre dizem que "tem que ser agora", "sua conta será bloqueada hoje" ou que "o problema é gravíssimo". Essa correria serve para você não ter tempo de pensar ou consultar sua família.</p>
+                        </div>
+                    </div>
+
+                    <div class="sinal-item">
+                        <div class="sinal-numero">2</div>
+                        <div class="sinal-texto">
+                            <h3>Pedido de Dinheiro ou Pix Segredo</h3>
+                            <p>Seja um conhecido que "mudou de número" ou uma promoção imperdível, o golpista sempre pede dinheiro rápido ou diz para você "não comentar com ninguém sobre o negócio".</p>
+                        </div>
+                    </div>
+
+                    <div class="sinal-item">
+                        <div class="sinal-numero">3</div>
+                        <div class="sinal-texto">
+                            <h3>Prêmios ou Benefícios Surpresa</h3>
+                            <p>Mensagens de sorteios que você nunca participou, liberação de dinheiros de aposentadoria esquecidos ou brindes caros grátis. Lembre-se do ditado: "Quando a esmola é demais, o santo desconfia".</p>
+                        </div>
+                    </div>
+
+                    <div class="sinal-item">
+                        <div class="sinal-numero">4</div>
+                        <div class="sinal-texto">
+                            <h3>Links Estranhos ou Erros de Escrita</h3>
+                            <p>Mensagens com erros de português ou links com nomes esquisitos no final (como <em>pague-aqui-urgente-banco.com</em>). Empresas sérias e bancos cuidam muito da sua comunicação oficial.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SEÇÃO 2 (Solicitada): DICAS IMPORTANTES DE SEGURANÇA -->
+            <h2 class="secao-titulo" id="dicas-seguranca">💡 Dicas de Ouro de Segurança</h2>
+
+            <!-- Dica 1 -->
+            <details>
+                <summary>1. Senhas Fortes: O Segredo do Cadeado</summary>
+                <div class="conteudo-dica">
+                    <p>Pense na sua senha como a chave física da sua casa. Uma chave simples qualquer um abre. Uma chave forte protege de verdade.</p>
+                    
+                    <div class="alerta-seguro">
+                        <div class="alerta-titulo">✔️ O que fazer:</div>
+                        <p>Crie senhas misturando letras maiúsculas, minúsculas, números e símbolos (como <strong>#</strong> ou <strong>*</strong>). Uma boa ideia é usar uma frase que só você conheça, por exemplo: <em>CaféComBoloGostoso#10</em>.</p>
+                    </div>
+
+                    <div class="alerta-perigo">
+                        <div class="alerta-titulo">❌ Evite a todo custo:</div>
+                        <p>Nunca use sua data de nascimento, nomes de netos, número de telefone ou sequências fáceis como "123456" ou "senha".</p>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Dica 2 -->
+            <details>
+                <summary>2. Golpes pelo WhatsApp: A Regra do Desconfiar</summary>
+                <div class="conteudo-dica">
+                    <p>Golpistas costumam colocar a foto de um filho ou neto no WhatsApp e dizer que "mudaram de número" para pedir dinheiro urgente emprestado.</p>
+                    
+                    <div class="alerta-seguro">
+                        <div class="alerta-titulo">✔️ O que fazer:</div>
+                        <p>Se um parente pedir dinheiro pelo WhatsApp com um número novo, ligue imediatamente para o <strong>número antigo</strong> dele ou faça uma chamada de vídeo para confirmar quem é de verdade antes de transferir qualquer valor.</p>
+                    </div>
+
+                    <div class="alerta-perigo">
+                        <div class="alerta-titulo">❌ Evite a todo custo:</div>
+                        <p>Não faça transferências (como Pix) com pressa, mesmo sob pressão de urgência ou ameaças emocionais.</p>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Dica 3 -->
+            <details>
+                <summary>3. Ligações de Bancos: Falsa Central</summary>
+                <div class="conteudo-dica">
+                    <p>Você recebe uma ligação onde dizem ser do seu banco, informando que sua conta foi invadida ou que há uma compra suspeita no seu cartão.</p>
+                    
+                    <div class="alerta-seguro">
+                        <div class="alerta-titulo">✔️ O que fazer:</div>
+                        <p>Desligue imediatamente a chamada. Pegue o seu cartão físico de plástico, veja o número oficial de telefone que fica atrás dele e ligue você mesmo para confirmar a informação.</p>
+                    </div>
+
+                    <div class="alerta-perigo">
+                        <div class="alerta-titulo">❌ Evite a todo custo:</div>
+                        <p>Bancos reais nunca pedem para você digitar suas senhas no telefone, nunca mandam um motoboy buscar o seu cartão e nunca pedem para você fazer transferências para "proteger" o seu dinheiro.</p>
+                    </div>
+                </div>
+            </details>
+
+
+            <!-- SEÇÃO 3 (Solicitada): SEUS DIREITOS NA INTERNET -->
+            <h2 class="secao-titulo" id="direitos-digitais">⚖️ Seus Direitos na Internet</h2>
+            <section class="grid-direitos">
+                
+                <div class="card-direito">
+                    <h3>🛡️ Estatuto da Pessoa Idosa (Proteção Financeira)</h3>
+                    <p>O Estatuto protege você contra abusos de qualquer natureza. Na internet, isso significa que nenhuma empresa pode induzir você a contratar empréstimos ou serviços abusivos sem o seu consentimento claro, expresso e bem informado.</p>
+                </div>
+
+                <div class="card-direito">
+                    <h3>🔒 LGPD - Seus Dados são Seus!</h3>
+                    <p>A Lei Geral de Proteção de Dados garante que seu CPF, telefone e endereço não podem ser vendidos ou compartilhados sem sua autorização. Você tem o direito de perguntar a qualquer empresa como eles conseguiram seus contatos.</p>
+                </div>
+
+                <div class="card-direito">
+                    <h3>🌐 Marco Civil da Internet</h3>
+                    <p>Essa lei funciona como a "Constituição da Internet" no Brasil. Ela garante que você tenha privacidade na rede, que sua conexão não seja cortada arbitrariamente e que você tenha liberdade de expressão com total respeito à sua dignidade.</p>
+                </div>
+
+            </section>
+
+
+            <!-- Jogo Prático / Quiz (Sem JavaScript) -->
+            <section class="quiz-container">
+                <h3>🎮 Vamos Praticar? (Jogo Verdadeiro ou Falso)</h3>
+                <p style="text-align: center; font-size: 0.95em; margin-bottom: 10px;">Responda clicando nas opções para ver se você está seguro!</p>
+
+                <!-- Pergunta 1 -->
+                <div class="quiz-pergunta">
+                    <p class="pergunta-texto">1. Se meu filho me mandar mensagem de um número novo pedindo Pix urgente, devo pagar na hora para ajudá-lo?</p>
+                    
+                    <input type="radio" id="p1-verdadeiro" name="pergunta1" class="quiz-radio">
+                    <input type="radio" id="p1-falso" name="pergunta1" class="quiz-radio">
+
+                    <div class="quiz-opcoes">
+                        <label for="p1-verdadeiro" class="quiz-opcao-label">👍 Verdadeiro</label>
+                        <label for="p1-falso" class="quiz-opcao-label">👎 Falso</label>
+                    </div>
+
+                    <div class="feedback-errado feedback-errado-1">
+                        ❌ Incorreto! Sempre desconfie de números novos pedindo dinheiro. Ligue para o número antigo do seu filho ou faça uma chamada de vídeo antes de enviar qualquer valor.
+                    </div>
+                    <div class="feedback-correto feedback-correto-1">
+                        🎉 Parabéns, você acertou! Nunca transfira dinheiro sem ter certeza absoluta de quem está falando por chamada de voz ou de vídeo.
+                    </div>
+                </div>
+
+                <!-- Pergunta 2 -->
+                <div class="quiz-pergunta">
+                    <p class="pergunta-texto">2. Bancos reais nunca enviam motoboy para buscar cartões na casa dos clientes?</p>
+                    
+                    <input type="radio" id="p2-verdadeiro" name="pergunta2" class="quiz-radio">
+                    <input type="radio" id="p2-falso" name="pergunta2" class="quiz-radio">
+
+                    <div class="quiz-opcoes">
+                        <label for="p2-verdadeiro" class="quiz-opcao-label">👍 Verdadeiro</label>
+                        <label for="p2-falso" class="quiz-opcao-label">👎 Falso</label>
+                    </div>
+
+                    <div class="feedback-correto feedback-correto-2">
+                        🎉 Perfeito! Isso é verdade absoluta. Se alguém disser que o banco vai recolher seu cartão físico na sua casa, é golpe!
+                    </div>
+                    <div class="feedback-errado feedback-errado-2">
+                        ❌ Atenção! Bancos reais nunca buscam cartões em casa e nunca pedem para você entregá-los a terceiros. Isso é um golpe perigoso!
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- Seção de Ajuda Urgente (Direcionamento do Botão de Pânico) -->
+            <section class="ajuda-urgente" id="ajuda-urgente">
+                <h3>🚨 O que fazer se achar que caiu em um golpe?</h3>
+                <p>Mantenha a calma. Todo mundo está sujeito a errar. Siga estes passos imediatamente:</p>
+                <ul>
+                    <li><strong>1. Ligue para o seu banco:</strong> Procure o telefone que fica atrás do seu cartão físico de plástico e peça o bloqueio das suas contas e cartões.</li>
+                    <li><strong>2. Avise seus parentes:</strong> Conte para um filho, neto, sobrinho ou vizinho de confiança. Eles podem ajudar a falar com o banco e resolver os problemas burocráticos.</li>
+                    <li><strong>3. Mude suas senhas:</strong> Entre no seu e-mail e aplicativos com a ajuda de alguém e mude as senhas se achar que o golpista teve acesso a elas.</li>
+                    <li><strong>4. Faça um Boletim de Ocorrência (B.O.):</strong> Peça ajuda para registrar o fato em uma delegacia de polícia ou pela internet. Isso ajuda a tentar recuperar o dinheiro.</li>
+                </ul>
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="#inicio" style="color: var(--cor-alerta); font-weight: bold; text-decoration: underline; font-size: 0.9em;">Voltar ao início da página</a>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Rodapé -->
+        <footer>
+            <p><strong>Portal da Sabedoria Digital</strong></p>
+            <p>Feito com amor e respeito para apoiar a independência de quem já viveu grandes histórias.</p>
+            <p style="font-size: 0.8em; opacity: 0.7;">Consulte sempre fontes oficiais de segurança do governo brasileiro e de suas instituições financeiras.</p>
+        </footer>
+
     </div>
-  </header>
-
-  <!-- Menu de Navegação Superior (Botões grandes e com excelente espaçamento de toque) -->
-  <nav class="bg-white border-b-2 border-gray-200 sticky top-0 z-20 shadow-md" aria-label="Menu Principal">
-    <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-2 p-3">
-      
-      <label for="tab-inicio" class="flex flex-col items-center justify-center p-3 rounded-xl border-2 border-gray-300 text-gray-800 font-bold text-center cursor-pointer transition-all hover:bg-gray-50 active:bg-blue-50 min-h-[76px]" tabindex="0" role="button">
-        <span class="text-2xl mb-1" aria-hidden="true">🏠</span>
-        <span class="text-base">Início</span>
-      </label>
-
-      <label for="tab-dicas" class="flex flex-col items-center justify-center p-3 rounded-xl border-2 border-gray-300 text-gray-800 font-bold text-center cursor-pointer transition-all hover:bg-gray-50 active:bg-blue-50 min-h-[76px]" tabindex="0" role="button">
-        <span class="text-2xl mb-1" aria-hidden="true">💡</span>
-        <span class="text-base">Dicas Úteis</span>
-      </label>
-
-      <label for="tab-golpes" class="flex flex-col items-center justify-center p-3 rounded-xl border-2 border-gray-300 text-gray-800 font-bold text-center cursor-pointer transition-all hover:bg-gray-50 active:bg-blue-50 min-h-[76px]" tabindex="0" role="button">
-        <span class="text-2xl mb-1" aria-hidden="true">🚨</span>
-        <span class="text-base">Evitar Golpes</span>
-      </label>
-
-      <label for="tab-direitos" class="flex flex-col items-center justify-center p-3 rounded-xl border-2 border-gray-300 text-gray-800 font-bold text-center cursor-pointer transition-all hover:bg-gray-50 active:bg-blue-50 min-h-[76px]" tabindex="0" role="button">
-        <span class="text-2xl mb-1" aria-hidden="true">⚖️</span>
-        <span class="text-base">Seus Direitos</span>
-      </label>
-
-      <label for="tab-ajuda" class="flex flex-col items-center justify-center p-3 rounded-xl border-2 border-gray-300 text-gray-800 font-bold text-center cursor-pointer transition-all hover:bg-gray-50 active:bg-blue-50 min-h-[76px] col-span-2 md:col-span-1" tabindex="0" role="button">
-        <span class="text-2xl mb-1" aria-hidden="true">📞</span>
-        <span class="text-base">Pedir Ajuda</span>
-      </label>
-
-    </div>
-  </nav>
-
-  <!-- Conteúdo Centralizado -->
-  <main class="flex-grow max-w-5xl w-full mx-auto p-4 sm:p-6 lg:p-8">
-
-    <!-- ================= TELA 1: INÍCIO (BANNER E AJUDA EM DESTAQUE) ================= -->
-    <section id="conteudo-inicio" class="space-y-8 animate-fadeIn">
-      
-      <!-- Banner Acolhedor Principal -->
-      <div class="relative bg-gradient-to-br from-blue-800 to-indigo-950 text-white rounded-3xl overflow-hidden shadow-xl">
-        <div class="absolute inset-0 opacity-10 bg-grid-pattern"></div>
-        <div class="relative p-6 sm:p-10 md:p-12 space-y-6 max-w-3xl">
-          <span class="inline-block bg-blue-500 text-white text-xs sm:text-sm font-extrabold uppercase tracking-widest px-4 py-1.5 rounded-full">
-            Seja bem-vindo(a) ao seu espaço seguro
-          </span>
-          <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight">
-            Navegue na internet com segurança, calma e autonomia!
-          </h2>
-          <p class="text-lg sm:text-xl text-blue-100 leading-relaxed">
-            Aqui você encontra conselhos simples, aprende a identificar perigos virtuais e descobre as leis que protegem a sua jornada no ambiente digital.
-          </p>
-          
-          <!-- Botão de Ajuda Urgente em Alto Destaque -->
-          <div class="pt-4 flex flex-col sm:flex-row gap-4">
-            <label for="tab-ajuda" class="inline-flex items-center justify-center gap-3 px-8 py-5 bg-red-600 hover:bg-red-700 text-white font-extrabold text-xl sm:text-2xl rounded-2xl cursor-pointer transition-all duration-150 transform hover:scale-105 active:scale-95 shadow-lg border-b-4 border-red-800 text-center">
-              <span class="text-3xl">⚠️</span>
-              <span>Precisa de Ajuda Urgente? Clique Aqui!</span>
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <!-- Guia Rápido de Atalhos -->
-      <div class="space-y-4">
-        <h3 class="text-2xl font-bold text-gray-800">O que você gostaria de explorar hoje?</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          
-          <label for="tab-dicas" class="bg-white p-6 rounded-2xl border-2 border-gray-200 hover:border-blue-500 shadow-sm transition-all cursor-pointer block group">
-            <span class="text-4xl block mb-2" aria-hidden="true">💡</span>
-            <h4 class="text-xl font-bold text-blue-900 group-hover:underline">Aprender Dicas</h4>
-            <p class="text-gray-600 text-base mt-1">Regras fáceis para proteger suas senhas e seu telefone celular.</p>
-          </label>
-
-          <label for="tab-golpes" class="bg-white p-6 rounded-2xl border-2 border-gray-200 hover:border-blue-500 shadow-sm transition-all cursor-pointer block group">
-            <span class="text-4xl block mb-2" aria-hidden="true">🕵️‍♂️</span>
-            <h4 class="text-xl font-bold text-blue-900 group-hover:underline">Identificar Golpes</h4>
-            <p class="text-gray-600 text-base mt-1">Conheça os sinais para não cair nas armadilhas mais comuns.</p>
-          </label>
-
-          <label for="tab-direitos" class="bg-white p-6 rounded-2xl border-2 border-gray-200 hover:border-blue-500 shadow-sm transition-all cursor-pointer block group">
-            <span class="text-4xl block mb-2" aria-hidden="true">⚖️</span>
-            <h4 class="text-xl font-bold text-blue-900 group-hover:underline">Seus Direitos</h4>
-            <p class="text-gray-600 text-base mt-1">Entenda o que a lei garante para proteger você na internet.</p>
-          </label>
-
-        </div>
-      </div>
-
-    </section>
-
-    <!-- ================= TELA 2: DICAS IMPORTANTES DE SEGURANÇA ================= -->
-    <section id="conteudo-dicas" class="space-y-6">
-      
-      <div class="bg-blue-50 border-l-8 border-blue-600 p-5 rounded-r-2xl shadow-sm">
-        <h2 class="text-2xl font-bold text-blue-950 mb-1">💡 Dicas Importantes de Segurança</h2>
-        <p class="text-lg text-gray-700">Clique em cada assunto para ver conselhos diretos para reforçar a proteção do seu aparelho.</p>
-      </div>
-
-      <div class="space-y-4">
-        
-        <!-- Dica 1: Senhas -->
-        <details class="bg-white border-2 border-gray-200 rounded-2xl overflow-hidden transition-all duration-150">
-          <summary class="flex items-center justify-between p-5 font-bold text-xl text-gray-900 cursor-pointer list-none hover:bg-gray-50">
-            <div class="flex items-center gap-4">
-              <span class="text-3xl bg-amber-100 p-2 rounded-xl" aria-hidden="true">🔑</span>
-              <span>Crie Senhas com a Técnica da "Frase Secreta"</span>
-            </div>
-            <span class="text-blue-600 text-2xl font-extrabold select-none">＋</span>
-          </summary>
-          <div class="p-6 border-t border-gray-150 space-y-4 text-lg text-gray-700 leading-relaxed">
-            <p class="font-bold text-blue-900">Por que evitar datas de aniversário ou nomes de netos?</p>
-            <p>Essas informações são públicas e fáceis de descobrir. Se um computador tentar adivinhar sua senha, ele testará essas palavras primeiro.</p>
-            
-            <div class="bg-green-50 p-4 rounded-xl border border-green-200 space-y-2">
-              <p class="text-green-800 font-bold">⭐ Faça assim:</p>
-              <p class="text-gray-900">Junte palavras de uma frase que só você conhece e coloque uma letra maiúscula e números:</p>
-              <p class="font-mono bg-white p-3 rounded border text-lg font-bold text-center">GostoDeCafeQuenteAs16h!</p>
-            </div>
-          </div>
-        </details>
-
-        <!-- Dica 2: Tranca Dupla (2FA) -->
-        <details class="bg-white border-2 border-gray-200 rounded-2xl overflow-hidden transition-all duration-150">
-          <summary class="flex items-center justify-between p-5 font-bold text-xl text-gray-900 cursor-pointer list-none hover:bg-gray-50">
-            <div class="flex items-center gap-4">
-              <span class="text-3xl bg-green-100 p-2 rounded-xl" aria-hidden="true">🚪</span>
-              <span>Ative a "Tranca Dupla" no seu WhatsApp</span>
-            </div>
-            <span class="text-blue-600 text-2xl font-extrabold select-none">＋</span>
-          </summary>
-          <div class="p-6 border-t border-gray-150 space-y-4 text-lg text-gray-700 leading-relaxed">
-            <p class="font-bold text-green-900">O que é isso?</p>
-            <p>Também chamada de "Confirmação em duas etapas". Funciona como um cadeado extra no seu WhatsApp. Mesmo que alguém consiga copiar seu chip, não conseguirá abrir suas conversas sem essa senha extra.</p>
-            
-            <div class="bg-blue-50 p-5 rounded-xl space-y-2">
-              <p class="font-bold text-blue-900">Como ligar a tranca extra:</p>
-              <ol class="list-decimal pl-5 space-y-2 text-gray-800">
-                <li>Abra o WhatsApp e vá em <strong class="text-blue-950">Configurações</strong> (or Ajustes).</li>
-                <li>Toque em <strong class="text-blue-950">Conta</strong>.</li>
-                <li>Toque em <strong class="text-blue-950">Confirmação em duas etapas</strong>.</li>
-                <li>Crie um código de 6 números que você não vá esquecer.</li>
-              </ol>
-            </div>
-          </div>
-        </details>
-
-        <!-- Dica 3: Cuidados com o Wi-Fi Público -->
-        <details class="bg-white border-2 border-gray-200 rounded-2xl overflow-hidden transition-all duration-150">
-          <summary class="flex items-center justify-between p-5 font-bold text-xl text-gray-900 cursor-pointer list-none hover:bg-gray-50">
-            <div class="flex items-center gap-4">
-              <span class="text-3xl bg-indigo-100 p-2 rounded-xl" aria-hidden="true">📶</span>
-              <span>Cuidado com Internet de Praças ou Shoppings</span>
-            </div>
-            <span class="text-blue-600 text-2xl font-extrabold select-none">＋</span>
-          </summary>
-          <div class="p-6 border-t border-gray-150 space-y-4 text-lg text-gray-700 leading-relaxed">
-            <p class="font-bold text-indigo-900">Qual o perigo do Wi-Fi gratuito?</p>
-            <p>Redes públicas de internet (sem senha) podem ser criadas por pessoas mal-intencionadas para "espiar" o que você digita em seu celular enquanto está conectado.</p>
-            
-            <div class="bg-red-50 p-4 rounded-xl border border-red-150 space-y-1">
-              <p class="text-red-800 font-bold">⚠️ Recomendação de Segurança:</p>
-              <p class="text-gray-800">Nunca abra aplicativos de bancos ou digite senhas de cartões enquanto estiver conectado ao Wi-Fi grátis de shoppings, praças ou aeroportos. Deixe para acessar assuntos financeiros quando estiver na internet protegida da sua casa.</p>
-            </div>
-          </div>
-        </details>
-
-      </div>
-    </section>
-
-    <!-- ================= TELA 3: IDENTIFICAR GOLPES NO COTIDIANO ================= -->
-    <section id="conteudo-golpes" class="space-y-6">
-      
-      <div class="bg-red-50 border-l-8 border-red-600 p-5 rounded-r-2xl shadow-sm">
-        <h2 class="text-2xl font-bold text-red-950 mb-1">🔍 Como Identificar Golpes no Dia a Dia</h2>
-        <p class="text-lg text-gray-700">Criminosos digitais costumam agir da mesma forma. Aprenda a reconhecer os 3 maiores sinais de perigo.</p>
-      </div>
-
-      <!-- Guia Visual: Sinais de Alerta -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        
-        <!-- Sinal 1: Urgência -->
-        <div class="bg-white p-6 rounded-2xl border-2 border-red-200 shadow-sm space-y-3 relative overflow-hidden">
-          <div class="absolute top-0 right-0 bg-red-600 text-white font-extrabold px-3 py-1 text-xs rounded-bl-xl">ALERTA 1</div>
-          <span class="text-4xl block" aria-hidden="true">⏱️</span>
-          <h3 class="text-xl font-bold text-red-950">Pressão e Urgência</h3>
-          <p class="text-gray-700 text-base leading-relaxed">
-            O golpista vai dizer que algo ruim vai acontecer <strong class="text-red-700">"AGORA"</strong> se você não clicar no link ou não fizer um pagamento. Eles tentam não dar tempo para você pensar.
-          </p>
-          <div class="bg-red-50 p-2.5 rounded-lg text-sm text-red-900 border border-red-100">
-            <strong>Exemplo:</strong> "Sua conta bancária será bloqueada em 15 minutos!"
-          </div>
-        </div>
-
-        <!-- Sinal 2: Prêmio Fácil -->
-        <div class="bg-white p-6 rounded-2xl border-2 border-amber-200 shadow-sm space-y-3 relative overflow-hidden">
-          <div class="absolute top-0 right-0 bg-amber-600 text-white font-extrabold px-3 py-1 text-xs rounded-bl-xl">ALERTA 2</div>
-          <span class="text-4xl block" aria-hidden="true">🎁</span>
-          <h3 class="text-xl font-bold text-amber-950">Prêmios do Nada</h3>
-          <p class="text-gray-700 text-base leading-relaxed">
-            Mensagens de SMS ou sorteios afirmando que você ganhou carros, celulares ou um grande valor em dinheiro, mas pedindo uma taxa prévia para "liberar" o prêmio.
-          </p>
-          <div class="bg-amber-50 p-2.5 rounded-lg text-sm text-amber-900 border border-amber-100">
-            <strong>Lembre-se:</strong> Ninguém ganha sorteios nos quais nunca se inscreveu!
-          </div>
-        </div>
-
-        <!-- Sinal 3: Pedir Segredo -->
-        <div class="bg-white p-6 rounded-2xl border-2 border-blue-200 shadow-sm space-y-3 relative overflow-hidden">
-          <div class="absolute top-0 right-0 bg-blue-600 text-white font-extrabold px-3 py-1 text-xs rounded-bl-xl">ALERTA 3</div>
-          <span class="text-4xl block" aria-hidden="true">🤫</span>
-          <h3 class="text-xl font-bold text-blue-950">Pedir para "Não Contar"</h3>
-          <p class="text-gray-700 text-base leading-relaxed">
-            Eles pedem para você fazer transações sem conversar com seus filhos, familiares ou gerentes de banco, afirmando ser uma "operação confidencial".
-          </p>
-          <div class="bg-blue-50 p-2.5 rounded-lg text-sm text-blue-900 border border-blue-100">
-            <strong>Sua ação:</strong> Se pedirem segredo, conte para alguém na mesma hora!
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Caixa Especial: O Golpe do Parente que Mudou de Número -->
-      <div class="bg-white p-6 rounded-2xl border-2 border-gray-200 shadow-sm space-y-4">
-        <h3 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
-          <span class="text-3xl" aria-hidden="true">💬</span>
-          O Golpe do "Novo Número do Filho"
-        </h3>
-        <p class="text-lg text-gray-700 leading-relaxed">
-          Nesse golpe, você recebe uma mensagem de um número desconhecido com a foto do seu filho, filha ou neto dizendo: 
-          <em class="text-red-700 font-serif block my-2 text-center text-xl bg-red-50 p-2 rounded">"Mãe, este é meu novo número de telefone. Salve aí! Estou precisando pagar uma conta mas meu aplicativo quebrou, você pode fazer um PIX para mim?"</em>
-        </p>
-        
-        <div class="bg-green-50 p-5 rounded-xl border border-green-200 space-y-2">
-          <p class="text-green-950 font-bold text-lg">💡 Como se proteger instantaneamente:</p>
-          <p class="text-gray-800 text-base">
-            Nunca transfira o dinheiro. Pegue o seu telefone e faça uma ligação de voz comum para o <strong>número antigo</strong> do seu familiar. Se ele não atender, não faça nenhuma transferência até conseguir falar pessoalmente com ele ou com outra pessoa que more com ele.
-          </p>
-        </div>
-      </div>
-
-    </section>
-
-    <!-- ================= TELA 4: SEUS DIREITOS NA INTERNET ================= -->
-    <section id="conteudo-direitos" class="space-y-6">
-      
-      <div class="bg-emerald-50 border-l-8 border-emerald-600 p-5 rounded-r-2xl shadow-sm">
-        <h2 class="text-2xl font-bold text-emerald-950 mb-1">⚖️ Seus Direitos e Garantias Digitais</h2>
-        <p class="text-lg text-gray-700">A lei protege você também no mundo digital. Conheça as garantias criadas para sua segurança.</p>
-      </div>
-
-      <!-- Leis Importantes explicadas de forma simples -->
-      <div class="space-y-6">
-        
-        <!-- Cartão LGPD -->
-        <div class="bg-white p-6 rounded-2xl border-2 border-gray-200 shadow-sm space-y-3">
-          <div class="flex items-center gap-3">
-            <span class="text-3xl bg-emerald-100 p-2 rounded-xl" aria-hidden="true">📄</span>
-            <h3 class="text-xl font-bold text-gray-900">A Lei de Proteção de Dados (LGPD)</h3>
-          </div>
-          <p class="text-lg text-gray-700 leading-relaxed">
-            Esta lei garante que os seus dados de identificação (como seu CPF, endereço, telefone e aposentadoria) pertencem <strong class="text-emerald-700">exclusivamente a você</strong>. Nenhuma empresa, loja ou banco pode vender, passar ou divulgar os seus dados sem a sua autorização por escrito.
-          </p>
-          <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 text-base text-gray-600">
-            <strong>O que significa na prática:</strong> Se uma empresa ligar para você sabendo tudo sobre sua vida sem você ter dado esses dados para ela, saiba que isso está errado e pode ser denunciado!
-          </div>
-        </div>
-
-        <!-- Estatuto do Idoso -->
-        <div class="bg-white p-6 rounded-2xl border-2 border-gray-200 shadow-sm space-y-3">
-          <div class="flex items-center gap-3">
-            <span class="text-3xl bg-indigo-100 p-2 rounded-xl" aria-hidden="true">📜</span>
-            <h3 class="text-xl font-bold text-gray-900">Estatuto da Pessoa Idosa</h3>
-          </div>
-          <p class="text-lg text-gray-700 leading-relaxed">
-            O Estatuto garante o direito à educação, cultura e ao acesso facilitado às novas tecnologias de informação. Isso significa que as empresas e o próprio governo devem oferecer plataformas na internet que sejam fáceis de usar e voltadas para a acessibilidade da melhor idade.
-          </p>
-          <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 text-base text-gray-600">
-            <strong>O que significa na prática:</strong> Você tem o direito de exigir atendimento presencial ou telefônico simplificado caso tenha dificuldades ou barreiras para realizar tarefas em aplicativos ou sites difíceis.
-          </div>
-        </div>
-
-        <!-- Defesa do Consumidor contra Empréstimos -->
-        <div class="bg-white p-6 rounded-2xl border-2 border-gray-200 shadow-sm space-y-3">
-          <div class="flex items-center gap-3">
-            <span class="text-3xl bg-blue-100 p-2 rounded-xl" aria-hidden="true">💳</span>
-            <h3 class="text-xl font-bold text-gray-900">Proteção contra Empréstimos não Solicitados</h3>
-          </div>
-          <p class="text-lg text-gray-700 leading-relaxed">
-            Muitas pessoas sofrem com depósitos em suas contas de aposentadoria referentes a empréstimos consignados que nunca pediram. O Código de Defesa do Consumidor protege você contra essas práticas abusivas.
-          </p>
-          <div class="bg-red-50 p-4 rounded-xl border border-red-200 text-base text-red-900">
-            <strong>Atenção:</strong> Se cair algum dinheiro estranho na sua conta e disserem que é um empréstimo que você não pediu, não mexa no dinheiro! Fale com seu banco imediatamente ou registre uma reclamação no site oficial <em>consumidor.gov.br</em> ou no Procon.
-          </div>
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- ================= TELA 5: PEDIR AJUDA ================= -->
-    <section id="conteudo-ajuda" class="space-y-6">
-      
-      <div class="bg-red-50 border-l-8 border-red-600 p-5 rounded-r-2xl shadow-sm">
-        <h2 class="text-2xl font-bold text-red-950 mb-1">📞 Canais de Ajuda e Apoio Fáceis</h2>
-        <p class="text-lg text-gray-700">Se você suspeita de fraude ou precisa de auxílio, utilize os contatos abaixo para se orientar com segurança.</p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        
-        <!-- Canal 1: Família -->
-        <div class="bg-white p-6 rounded-2xl border-2 border-gray-200 shadow-sm flex flex-col justify-between space-y-4">
-          <div>
-            <span class="text-4xl bg-yellow-100 p-3 rounded-2xl inline-block" aria-hidden="true">🏠</span>
-            <h3 class="text-xl font-bold text-gray-900 mt-2">Pessoas de Confiança</h3>
-            <p class="text-gray-700 text-base mt-2 leading-relaxed">
-              Sempre converse com um parente próximo (filho, filha, neto, neta) ou um vizinho de total confiança antes de tomar qualquer decisão financeira ou de enviar dinheiro por causa de uma mensagem.
-            </p>
-          </div>
-          <div class="bg-yellow-50 p-4 rounded-xl border border-yellow-200 text-yellow-950 text-base font-semibold">
-            Dica de Ouro: Crie um código de verificação verbal simples que só a sua família imediata sabe usar!
-          </div>
-        </div>
-
-        <!-- Canal 2: Disque 100 -->
-        <div class="bg-white p-6 rounded-2xl border-2 border-gray-200 shadow-sm flex flex-col justify-between space-y-4">
-          <div>
-            <span class="text-4xl bg-red-100 p-3 rounded-2xl inline-block" aria-hidden="true">📞</span>
-            <h3 class="text-xl font-bold text-gray-900 mt-2">Disque Direitos Humanos</h3>
-            <p class="text-gray-700 text-base mt-2 leading-relaxed">
-              O Disque 100 é um serviço gratuito para denunciar violações de direitos humanos, incluindo golpes financeiros e violência patrimonial contra a pessoa idosa.
-            </p>
-          </div>
-          <a href="tel:100" class="block w-full py-4 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-extrabold text-center rounded-xl text-xl transition-all">
-            Ligar para o Disque 100
-          </a>
-        </div>
-
-        <!-- Canal 3: Procon ou Delegacia -->
-        <div class="bg-white p-6 rounded-2xl border-2 border-gray-200 shadow-sm md:col-span-2 flex flex-col sm:flex-row items-center gap-6">
-          <span class="text-5xl bg-blue-100 p-4 rounded-2xl" aria-hidden="true">👮‍♂️</span>
-          <div class="space-y-2 text-left">
-            <h3 class="text-xl font-bold text-gray-900">Delegacias Especializadas</h3>
-            <p class="text-gray-700 text-base leading-relaxed">
-              Se você acabou fazendo uma transferência ou PIX para um golpista por engano, faça um Boletim de Ocorrência imediatamente. Há delegacias dedicadas exclusivamente à proteção do idoso e ao combate a crimes digitais.
-            </p>
-            <p class="text-blue-900 font-bold text-base">
-              Ligue para a polícia de sua cidade (número 190) ou vá à delegacia mais próxima para receber amparo legal.
-            </p>
-          </div>
-        </div>
-
-      </div>
-
-    </section>
-
-  </main>
-
-  <!-- Rodapé Estável e Legível -->
-  <footer class="bg-slate-900 text-slate-100 text-center py-8 px-4 mt-12 border-t-4 border-blue-900">
-    <div class="max-w-5xl mx-auto space-y-3">
-      <p class="text-xl font-bold">🛡️ SeguraMente — Viva Bem, Navegue com Segurança</p>
-      <p class="text-base text-slate-400">Este guia foi criado para apoiar a autonomia e a tranquilidade da pessoa idosa na internet.</p>
-    </div>
-  </footer>
 
 </body>
 </html>
