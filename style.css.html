@@ -1,0 +1,635 @@
+<style>
+        /* --- VARIÁVEIS DE DESIGN E CORES ACESSÍVEIS --- */
+        :root {
+            --bg-principal: #f0f4f8;
+            --bg-card: #ffffff;
+            --texto-principal: #1e293b;
+            --texto-secundario: #475569;
+            --cor-primaria: #0284c7; /* Azul seguro e acolhedor */
+            --cor-primaria-hover: #0369a1;
+            --cor-alerta: #dc2626;
+            --cor-alerta-suave: #fef2f2;
+            --cor-sucesso: #16a34a;
+            --cor-destaque: #f59e0b; /* Cor de atenção (Laranja) */
+            --borda-card: #e2e8f0;
+            --tamanho-fonte-base: 18px; /* Fonte aumentada por padrão para facilitar a leitura */
+            --espacamento-toque: 16px;
+        }
+
+        /* --- CONFIGURAÇÕES GERAIS E ACESSIBILIDADE --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth; /* Efeito de deslizar suave ao clicar no botão de ajuda */
+        }
+
+        body {
+            background-color: var(--bg-principal);
+            color: var(--texto-principal);
+            font-size: var(--tamanho-fonte-base);
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* --- UTILITÁRIOS: ESCONDER ELEMENTOS DE CONTROLE --- */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        /* --- MECANISMO DE ACESSIBILIDADE VIA CSS (SEM JAVASCRIPT) --- */
+        /* 1. Ativação do Alto Contraste */
+        #alto-contraste:checked ~ .app-container {
+            --bg-principal: #000000;
+            --bg-card: #121212;
+            --texto-principal: #ffffff;
+            --texto-secundario: #e2e8f0;
+            --cor-primaria: #ffff00; /* Amarelo de alto contraste */
+            --cor-primaria-hover: #ffea00;
+            --cor-alerta: #ff3333;
+            --cor-alerta-suave: #220000;
+            --cor-sucesso: #33ff33;
+            --cor-destaque: #ffaa00;
+            --borda-card: #ffff00;
+        }
+
+        /* 2. Ativação do Tamanho de Letra Extra Grande */
+        #fonte-grande:checked ~ .app-container {
+            --tamanho-fonte-base: 24px;
+        }
+
+        /* --- LAYOUT E ESTRUTURA --- */
+        .app-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--bg-principal);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid var(--borda-card);
+            border-right: 1px solid var(--borda-card);
+        }
+
+        /* --- BARRA SUPERIOR DE ACESSIBILIDADE --- */
+        .barra-acessibilidade {
+            background-color: #1e293b;
+            color: #ffffff;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .barra-acessibilidade span {
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .botoes-acessibilidade {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-acessibilidade {
+            display: inline-flex;
+            align-items: center;
+            background-color: #334155;
+            color: #ffffff;
+            border: 2px solid #64748b;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85em;
+            user-select: none;
+            transition: background-color 0.2s;
+        }
+
+        .btn-acessibilidade:hover,
+        .btn-acessibilidade:focus {
+            background-color: #475569;
+            outline: 3px solid #0284c7;
+        }
+
+        /* Destaque visual quando os controlos de acessibilidade estão ativos */
+        #alto-contraste:checked ~ .app-container .btn-acessibilidade[for="alto-contraste"],
+        #fonte-grande:checked ~ .app-container .btn-acessibilidade[for="fonte-grande"] {
+            background-color: var(--cor-primaria);
+            color: #000000;
+            border-color: #ffffff;
+        }
+
+        /* --- CABEÇALHO --- */
+        header {
+            background-color: var(--cor-primaria);
+            color: #ffffff;
+            text-align: center;
+            padding: 30px 20px;
+            border-bottom: 5px solid var(--cor-primaria-hover);
+        }
+
+        #alto-contraste:checked ~ .app-container header {
+            color: #000000;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        /* --- SEÇÃO 1: BANNER INICIAL COM BOTÃO DE AJUDA --- */
+        .banner-inicial {
+            background: linear-gradient(135deg, #0284c7 0%, #075985 100%);
+            color: #ffffff;
+            padding: 40px 30px;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            position: relative;
+        }
+
+        #alto-contraste:checked ~ .app-container .banner-inicial {
+            background: #121212;
+            border: 3px solid #ffff00;
+            color: #ffffff;
+        }
+
+        .banner-conteudo h2 {
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .banner-conteudo p {
+            font-size: 1.1em;
+            margin-bottom: 25px;
+            opacity: 0.95;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Botão Vermelho de Emergência / Ajuda Rápida */
+        .btn-ajuda-urgente {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background-color: #e11d48;
+            color: #ffffff;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 18px 35px;
+            border-radius: 50px;
+            box-shadow: 0 10px 20px rgba(225, 29, 72, 0.4);
+            border: 3px solid #ffffff;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            animation: pulsar 2s infinite;
+        }
+
+        .btn-ajuda-urgente:hover,
+        .btn-ajuda-urgente:focus {
+            background-color: #be123c;
+            transform: scale(1.03);
+            box-shadow: 0 6px 15px rgba(225, 29, 72, 0.6);
+            outline: none;
+        }
+
+        #alto-contraste:checked ~ .app-container .btn-ajuda-urgente {
+            background-color: #ff3333;
+            color: #000000;
+            border-color: #ffff00;
+            box-shadow: none;
+        }
+
+        @keyframes pulsar {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.04); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- CONTEÚDO PRINCIPAL --- */
+        main {
+            padding: 0 20px 20px 20px;
+            flex-grow: 1;
+        }
+
+        /* Títulos de Categorias */
+        .secao-titulo {
+            font-size: 1.4em;
+            margin: 35px 0 18px 0;
+            padding-bottom: 8px;
+            border-bottom: 3px solid var(--cor-primaria);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--texto-principal);
+        }
+
+        /* --- SEÇÃO 2: DICAS DE SEGURANÇA (EFEITO ACORDEÃO) --- */
+        details {
+            background-color: var(--bg-card);
+            border: 2px solid var(--borda-card);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: border-color 0.2s;
+        }
+
+        details[open] {
+            border-color: var(--cor-primaria);
+        }
+
+        summary {
+            padding: 18px 20px;
+            font-weight: bold;
+            font-size: 1.1em;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary::after {
+            content: "➕";
+            font-size: 0.9em;
+            color: var(--cor-primaria);
+        }
+
+        details[open] summary::after {
+            content: "➖";
+        }
+
+        summary:hover,
+        summary:focus {
+            background-color: rgba(2, 132, 199, 0.05);
+            outline: none;
+        }
+
+        #alto-contraste:checked ~ .app-container summary:hover {
+            background-color: #ffff00;
+            color: #000000;
+        }
+
+        .conteudo-dica {
+            padding: 20px;
+            border-top: 2px solid var(--borda-card);
+            background-color: rgba(0, 0, 0, 0.01);
+        }
+
+        /* Caixas Informativas de Fazer / Evitar */
+        .alerta-perigo {
+            background-color: rgba(220, 38, 38, 0.08);
+            border-left: 6px solid var(--cor-alerta);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin: 15px 0;
+        }
+
+        .alerta-seguro {
+            background-color: rgba(22, 163, 74, 0.08);
+            border-left: 6px solid var(--cor-sucesso);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin: 15px 0;
+        }
+
+        .alerta-titulo {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .alerta-perigo .alerta-titulo {
+            color: var(--cor-alerta);
+        }
+
+        .alerta-seguro .alerta-titulo {
+            color: var(--cor-sucesso);
+        }
+
+        /* --- SEÇÃO 3: DIREITOS DIGITAIS --- */
+        .grid-direitos {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .card-direito {
+            background-color: var(--bg-card);
+            border: 2px solid var(--borda-card);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .card-direito h3 {
+            color: var(--cor-primaria);
+            font-size: 1.15em;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-direito p {
+            color: var(--texto-secundario);
+            font-size: 0.95em;
+        }
+
+        /* --- SEÇÃO 4: DETECTAR GOLPES --- */
+        .painel-golpes {
+            background-color: var(--bg-card);
+            border: 2px solid var(--borda-card);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .intro-golpes {
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .lista-sinais {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sinal-item {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--borda-card);
+        }
+
+        .sinal-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .sinal-numero {
+            background-color: var(--cor-destaque);
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 1.1em;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        #alto-contraste:checked ~ .app-container .sinal-numero {
+            background-color: var(--cor-primaria);
+            color: #000000;
+        }
+
+        .sinal-texto h3 {
+            font-size: 1.1em;
+            margin-bottom: 4px;
+            color: var(--texto-principal);
+        }
+
+        .sinal-texto p {
+            font-size: 0.95em;
+            color: var(--texto-secundario);
+        }
+
+        /* --- JOGO / QUIZ DE TREINO (CSS PURO) --- */
+        .quiz-container {
+            background-color: var(--bg-card);
+            border: 3px solid var(--cor-primaria);
+            border-radius: 16px;
+            padding: 24px;
+            margin-top: 40px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .quiz-container h3 {
+            font-size: 1.3em;
+            color: var(--cor-primaria);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .quiz-pergunta {
+            margin-top: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px dashed var(--borda-card);
+        }
+
+        .quiz-pergunta:last-of-type {
+            border-bottom: none;
+        }
+
+        .pergunta-texto {
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .quiz-opcoes {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .quiz-opcao-label {
+            flex: 1;
+            min-width: 140px;
+            display: block;
+            background-color: var(--bg-principal);
+            border: 2px solid var(--borda-card);
+            border-radius: 10px;
+            padding: 14px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: bold;
+            user-select: none;
+            transition: all 0.2s;
+        }
+
+        .quiz-opcao-label:hover {
+            border-color: var(--cor-primaria);
+            background-color: rgba(2, 132, 199, 0.05);
+        }
+
+        .quiz-radio {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .quiz-radio:checked + .quiz-opcao-label {
+            background-color: var(--cor-primaria);
+            color: #ffffff;
+            border-color: var(--cor-primaria);
+        }
+
+        #alto-contraste:checked ~ .app-container .quiz-radio:checked + .quiz-opcao-label {
+            color: #000000;
+            background-color: var(--cor-primaria);
+        }
+
+        /* FEEDBACKS DAS PERGUNTAS */
+        .feedback-correto,
+        .feedback-errado {
+            display: none;
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .feedback-correto {
+            background-color: rgba(22, 163, 74, 0.15);
+            color: var(--cor-sucesso);
+            border: 2px solid var(--cor-sucesso);
+        }
+
+        .feedback-errado {
+            background-color: rgba(220, 38, 38, 0.15);
+            color: var(--cor-alerta);
+            border: 2px solid var(--cor-alerta);
+        }
+
+        /* Lógica de acionamento de feedback dependendo da resposta selecionada */
+        #p1-falso:checked ~ .feedback-correto-1 { display: block; }
+        #p1-verdadeiro:checked ~ .feedback-errado-1 { display: block; }
+
+        #p2-verdadeiro:checked ~ .feedback-correto-2 { display: block; }
+        #p2-falso:checked ~ .feedback-errado-2 { display: block; }
+
+        /* --- SEÇÃO DE PROTOCOLO DE AJUDA RÁPIDA --- */
+        .ajuda-urgente {
+            background-color: var(--cor-alerta-suave);
+            border: 3px solid var(--cor-alerta);
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 40px;
+        }
+
+        #alto-contraste:checked ~ .app-container .ajuda-urgente {
+            background-color: #000000;
+            border-color: #ff3333;
+        }
+
+        .ajuda-urgente h3 {
+            color: var(--cor-alerta);
+            font-size: 1.3em;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ajuda-urgente ul {
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+
+        .ajuda-urgente li {
+            margin-bottom: 12px;
+        }
+
+        /* --- RODAPÉ --- */
+        footer {
+            background-color: #1e293b;
+            color: #ffffff;
+            text-align: center;
+            padding: 25px 20px;
+            margin-top: 40px;
+            border-top: 4px solid var(--cor-primaria);
+            font-size: 0.9em;
+        }
+
+        footer p {
+            margin-bottom: 8px;
+        }
+
+        footer a {
+            color: var(--cor-primaria);
+            text-decoration: underline;
+        }
+
+        #alto-contraste:checked ~ .app-container footer a {
+            color: #ffff00;
+        }
+
+        /* --- RESPONSIVIDADE PARA DISPOSITIVOS MÓVEIS --- */
+        @media (max-width: 600px) {
+            body {
+                font-size: calc(var(--tamanho-fonte-base) - 2px);
+            }
+            .barra-acessibilidade {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .botoes-acessibilidade {
+                justify-content: center;
+            }
+            .quiz-opcoes {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .quiz-opcao-label {
+                width: 100%;
+            }
+            .banner-inicial {
+                padding: 30px 15px;
+            }
+            .btn-ajuda-urgente {
+                font-size: 1.1em;
+                padding: 15px 25px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
